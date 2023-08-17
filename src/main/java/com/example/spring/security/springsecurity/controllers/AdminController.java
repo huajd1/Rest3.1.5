@@ -14,21 +14,17 @@ import java.security.Principal;
 @RequestMapping("/admin")
 public class AdminController {
     private final UserServiceImp userServiceImp;
-    private final RoleServiceImp roleServiceImp;
 
-    public AdminController(UserServiceImp userServiceImp, RoleServiceImp roleServiceImp) {
+
+    public AdminController(UserServiceImp userServiceImp) {
         this.userServiceImp = userServiceImp;
-        this.roleServiceImp = roleServiceImp;
+    
     }
 
     @GetMapping
     public String adminView(Model model, Principal principal) {
-        model.addAttribute("allUsers", userServiceImp.findAll());
         User princ = userServiceImp.findByName(principal.getName());
         model.addAttribute("princ", princ);
-        model.addAttribute("newUser", new User());
-        model.addAttribute("allRoles", roleServiceImp.getRoles());
-        model.addAttribute("titleTable", "Список всех пользователей:");
         return "admin";
     }
 
