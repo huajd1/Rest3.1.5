@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/user")
+@PreAuthorize("hasRole('USER')")
 public class UserRestController {
     private final UserServiceImp userServiceImp;
 
