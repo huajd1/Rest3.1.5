@@ -28,7 +28,7 @@ public class AdminRestController {
         return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
     }
 
-    @GetMapping("/users/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<User> showUser(@PathVariable("id") int id) {
         return new ResponseEntity<> (userService.getById(id), HttpStatus.OK);
     }
@@ -47,14 +47,14 @@ public class AdminRestController {
         return new ResponseEntity<> (HttpStatus.OK);
     }
 
-    @DeleteMapping("/users/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<HttpStatus> deleteUser(@PathVariable("id") int id) {
         userService.delete(id);
         return new ResponseEntity<> (HttpStatus.OK);
     }
 
 
-    @PatchMapping("/users/{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<HttpStatus> editUser(@RequestBody @NotNull User user, @PathVariable Integer id) {
         user.setId(id);
         System.out.println(user);
