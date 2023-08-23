@@ -65,7 +65,7 @@ form_new.addEventListener('submit', addNewUser);
 
 async function addNewUser(event) {
     event.preventDefault();
-    const urlNew = 'api/admins/newAddUser';
+    const urlNew = 'api/admin/newAddUser';
     let listOfRole = [];
     for (let i = 0; i < role_new.length; i++) {
         listOfRole.push({
@@ -118,7 +118,7 @@ const closeDeleteButton = document.getElementById("closeDelete")
 const bsDeleteModal = new bootstrap.Modal(deleteModal);
 
 async function deleteModalData(id) {
-    const  urlForDel = 'api/admins/users/' + id;
+    const  urlForDel = 'api/admin/' + id;
     let usersPageDel = await fetch(urlForDel);
     if (usersPageDel.ok) {
         let userData =
@@ -137,7 +137,7 @@ async function deleteModalData(id) {
     }
 }
 async function deleteUser() {
-    let urlDel = 'api/admins/users/' + id_del.value;
+    let urlDel = 'api/admin/' + id_del.value;
     let method = {
         method: 'DELETE',
         headers: {
@@ -163,7 +163,7 @@ const closeEditButton = document.getElementById("editClose")
 const bsEditModal = new bootstrap.Modal(editModal);
 
 async function loadDataForEditModal(id) {
-    const  urlDataEd = 'api/admin/users/' + id;
+    const  urlDataEd = 'api/admin/' + id;
     let usersPageEd = await fetch(urlDataEd);
     if (usersPageEd.ok) {
         // let userData =
@@ -182,7 +182,7 @@ async function loadDataForEditModal(id) {
     }
 }
 async function editUser() {
-    let urlEdit = 'api/admin/users/' + id_ed.value;
+    let urlEdit = 'api/admin/' + id_ed.value;
     let listOfRole = [];
     console.dir(form_ed)
     for (let i=0; i<form_ed.roles.options.length; i++) {
