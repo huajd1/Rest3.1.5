@@ -55,8 +55,41 @@ function loadTableData(listAllUser) {
     }
     tableBody.innerHTML = dataHtml;
 }
+
+async function getUsPage() {
+    let page = await fetch(userurl);
+
+    if(page.ok) {
+        let user = await  page.json();
+        getInfoUser(user);
+    } else {
+        alert(`Error, ${page.status}`)
+    }
+}
+function  getInfoUser(user) {
+    const tableBody = document.getElementById('usertbody');
+    let dataHtml = '';
+    let roles = [];
+    console.log('userSata', JSON.stringify(user))
+    for (let role of user.roles) {roles
+        roles.push(" " + role.rolename.toString()
+            .replaceAll("ROLE_", ""))
+    }
+    dataHtml =
+        `<tr>
+    <td>${user.id}</td>
+    <td>${user.firstName}</td>
+    <td>${user.lastName}</td>
+    <td>${user.age}</td>
+    <td>${user.email}</td>
+    <td>${roles}</td>   
+</tr>`
+
+    tableBody.innerHTML = dataHtml;
+}
+
 getAdminPage();
-getUserPage();
+getUsPage();
 
 function addNewUser(event) {
     event.preventDefault();
