@@ -58,54 +58,53 @@ function loadTableData(listAllUser) {
 getAdminPage();
 getUserPage();
 
-const form_new = document.getElementById('formForNewUser');
-const role_new = document.querySelector('#roles').selectedOptions;
-
-form_new.addEventListener('submit', addNewUser);
-
-async function addNewUser(event) {
+function addNewUser(event) {
     event.preventDefault();
-    const urlNew = 'api/admin/newAddUser';
-    let listOfRole = [];
-    for (let i = 0; i < role_new.length; i++) {
-        listOfRole.push({
-            id:role_new[i].value
-        });
-    }
-    let method = {
+
+    const form = document.getElementById('formForNewUser');
+    const selectedRoles = document.querySelector('#roles').selectedOptions;
+
+    const user = {
+        firstName: form.firstname.value,
+        lastName: form.lastname.value,
+        age: form.age.value,
+        email: form.email.value,
+        password: form.password.value,
+        roles: Array.from(selectedRoles).map(option => ({ id: option.value }))
+    };
+
+    const url = 'api/admin/newAddUser';
+
+    fetch(url, {
         method: 'POST',
         headers: {
-            "Content-Type": "application/json"
+            'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
-            firstName: form_new.firstname.value,
-            lastName: form_new.lastname.value,
-            age: form_new.age.value,
-            email: form_new.email.value,
-            password: form_new.password.value,
-            roles: listOfRole
-        })
-    }
-    await fetch(urlNew,method).then(() => {
-        form_new.reset();
-        getAdminPage();
-        var triggerTabList = [].slice.call(document.querySelectorAll('#Admin_panel-tab a'))
-        triggerTabList.forEach(function (triggerEl) {
-            var tabTrigger = new bootstrap.Tab(triggerEl)
-
-            triggerEl.addEventListener('click', function (event) {
-                event.preventDefault()
-                tabTrigger.show()
-            })
-        })
-        var triggerEl = document.querySelector('#Admin_panel-tab a[href="#user_table"]')
-        bootstrap.Tab.getInstance(triggerEl).show() // Select tab by name
+        body: JSON.stringify(user)
+    }).then(response => {
+        if (response.ok) {
+            // User added successfully
+            form.reset();
+            getAdminPage(); // Refresh the user table
+            const userTableTabButton = document.querySelector('button[data-bs-target="#user_table"]');
+            if (userTableTabButton) {
+                userTableTabButton.click();
+            } else {
+                console.error('Не удалось найти ссылку на вкладку "user_table".');
+            }
+        } else {
+            // Error adding user
+            alert('Failed to add user. Please try again.');
+        }
+    }).catch(error => {
+        console.error('Error adding user:', error);
+        alert('An error occurred while adding the user. Please try again.');
     });
-
 }
 
 
-
+const form_new = document.getElementById('formForNewUser');
+form_new.addEventListener('submit', addNewUser);
 
 const id_del = document.getElementById('id_del');
 const name_del = document.getElementById('name_del');
@@ -212,3 +211,4 @@ async function editUser() {
         getAdminPage();
     })
 }
+
